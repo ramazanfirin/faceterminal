@@ -1,0 +1,72 @@
+<div>
+    <h2 data-translate="terminalApp.compare.home.title">Compares</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="compare.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="terminalApp.compare.home.createLabel">
+                        Create new Compare
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="terminalApp.compare.url1">Url 1</span></th>
+                    <th><span data-translate="terminalApp.compare.url2">Url 2</span></th>
+                    <th><span data-translate="terminalApp.compare.image1">Image 1</span></th>
+                    <th><span data-translate="terminalApp.compare.image2">Image 2</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="compare in vm.compares track by compare.id">
+                    <td><a ui-sref="compare-detail({id:compare.id})">{{compare.id}}</a></td>
+                    <td>{{compare.url1}}</td>
+                    <td>{{compare.url2}}</td>
+                    <td>
+                        <a ng-if="compare.image1" ng-click="vm.openFile(compare.image1ContentType, compare.image1)">
+                            <img data-ng-src="{{'data:' + compare.image1ContentType + ';base64,' + compare.image1}}" style="max-height: 30px;" alt="compare image"/>
+                        </a>
+                        <span ng-if="compare.image1">{{compare.image1ContentType}}, {{vm.byteSize(compare.image1)}}</span>
+                    </td>
+                    <td>
+                        <a ng-if="compare.image2" ng-click="vm.openFile(compare.image2ContentType, compare.image2)">
+                            <img data-ng-src="{{'data:' + compare.image2ContentType + ';base64,' + compare.image2}}" style="max-height: 30px;" alt="compare image"/>
+                        </a>
+                        <span ng-if="compare.image2">{{compare.image2ContentType}}, {{vm.byteSize(compare.image2)}}</span>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="compare-detail({id:compare.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="compare.edit({id:compare.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="compare.delete({id:compare.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

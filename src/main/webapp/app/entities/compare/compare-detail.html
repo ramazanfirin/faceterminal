@@ -1,0 +1,45 @@
+
+<div>
+    <h2><span data-translate="terminalApp.compare.detail.title">Compare</span> {{vm.compare.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="terminalApp.compare.url1">Url 1</span></dt>
+        <dd>
+            <span>{{vm.compare.url1}}</span>
+        </dd>
+        <dt><span data-translate="terminalApp.compare.url2">Url 2</span></dt>
+        <dd>
+            <span>{{vm.compare.url2}}</span>
+        </dd>
+        <dt><span data-translate="terminalApp.compare.image1">Image 1</span></dt>
+        <dd>
+            <div ng-if="vm.compare.image1">
+                <a ng-click="vm.openFile(vm.compare.image1ContentType, vm.compare.image1)">
+                    <img data-ng-src="{{'data:' + vm.compare.image1ContentType + ';base64,' + vm.compare.image1}}" style="max-width: 100%;" alt="compare image"/>
+                </a>
+                {{vm.compare.image1ContentType}}, {{vm.byteSize(vm.compare.image1)}}
+            </div>
+        </dd>
+        <dt><span data-translate="terminalApp.compare.image2">Image 2</span></dt>
+        <dd>
+            <div ng-if="vm.compare.image2">
+                <a ng-click="vm.openFile(vm.compare.image2ContentType, vm.compare.image2)">
+                    <img data-ng-src="{{'data:' + vm.compare.image2ContentType + ';base64,' + vm.compare.image2}}" style="max-width: 100%;" alt="compare image"/>
+                </a>
+                {{vm.compare.image2ContentType}}, {{vm.byteSize(vm.compare.image2)}}
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="compare-detail.edit({id:vm.compare.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

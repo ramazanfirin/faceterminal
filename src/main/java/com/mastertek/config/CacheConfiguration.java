@@ -44,6 +44,7 @@ public class CacheConfiguration {
             cm.createCache(com.mastertek.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.mastertek.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.mastertek.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(com.mastertek.domain.Compare.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

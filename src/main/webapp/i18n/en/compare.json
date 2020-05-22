@@ -1,0 +1,24 @@
+{
+    "terminalApp": {
+        "compare" : {
+            "home": {
+                "title": "Compares",
+                "createLabel": "Create a new Compare",
+                "createOrEditLabel": "Create or edit a Compare"
+            },
+            "created": "A new Compare is created with identifier {{ param }}",
+            "updated": "A Compare is updated with identifier {{ param }}",
+            "deleted": "A Compare is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Compare {{ id }}?"
+            },
+            "detail": {
+                "title": "Compare"
+            },
+            "url1": "Url 1",
+            "url2": "Url 2",
+            "image1": "Image 1",
+            "image2": "Image 2"
+        }
+    }
+}

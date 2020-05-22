@@ -15,14 +15,10 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +41,7 @@ import com.mastertek.domain.User;
 import com.mastertek.repository.UserRepository;
 import com.mastertek.security.SecurityUtils;
 import com.mastertek.service.MailService;
+import com.mastertek.service.TerminalService;
 import com.mastertek.service.UserService;
 import com.mastertek.service.dto.UserDTO;
 import com.mastertek.web.rest.errors.EmailAlreadyUsedException;
@@ -56,7 +53,6 @@ import com.mastertek.web.rest.vm.KeyAndPasswordVM;
 import com.mastertek.web.rest.vm.ManagedUserVM;
 import com.mastertek.web.rest.vm.OpenDoorInfoVM;
 import com.mastertek.web.rest.vm.OpenDoorVM;
-import com.thoughtworks.xstream.core.util.Base64Encoder;
 
 /**
  * REST controller for managing the current user's account.
@@ -72,12 +68,15 @@ public class TerminalResource {
     private final UserService userService;
 
     private final MailService mailService;
+    
+    private final TerminalService terminalService;
 
-    public TerminalResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    public TerminalResource(UserRepository userRepository, UserService userService, MailService mailService,TerminalService terminalService) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.terminalService = terminalService;
     }
 
     /**
@@ -226,51 +225,15 @@ public class TerminalResource {
     @PostMapping(path = "/Subscribe/Snap")
     @Timed
     public void stranger(@RequestBody String pBody,HttpServletRequest request) throws JsonParseException, JsonMappingException, IOException {
-    	request.getParameterMap();
-    	System.out.println("bitti");
-    	
-    	ObjectMapper objectMapper = new ObjectMapper();
-    	JsonNode jsonNode = objectMapper.readValue(pBody, JsonNode.class);
-    	
-    	String data = jsonNode.get("SanpPic").toString();
-    	String base64Image = data.split(",")[1];
-    	byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
-    	BufferedImage img = ImageIO.read(new ByteArrayInputStream(imageBytes));
-    	ImageIO.write(img, "png", new File("c:\\temp\\"+UUID.randomUUID()+".png"));
-    	System.out.println("bitti");
-    	
-    	JsonNode info = jsonNode.get("info");
-    	String deviceId = info.get("DeviceID").toString();
-    	String ip = request.getRemoteHost();
-    	openDoor(deviceId,ip);
-    	
+    	terminalService.snap(pBody, request);
     }
     
-    
-    public static void openDoor(String deviceId,String ip) throws ClientProtocolException, IOException {
-    	
-
-    	OpenDoorVM openDoorVM = new OpenDoorVM();
-    	OpenDoorInfoVM openDoorInfoVM = new OpenDoorInfoVM(deviceId, "YOU CAN PASS...");
-    	openDoorVM.setInfo(openDoorInfoVM);
-    	
-    	ObjectMapper objectMapper = new ObjectMapper();
-    	HttpClient client = HttpClientBuilder.create().build();
-    	
-    	HttpPost httpPut = new HttpPost("http://"+ip+"/action/OpenDoor");
-		StringEntity entity = new StringEntity(objectMapper.writeValueAsString(openDoorVM),Charset.forName("UTF-8"));
-		httpPut.setEntity(entity);
-		String encoding = Base64.getEncoder().encodeToString(("admin:admin").getBytes());
-		httpPut.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + encoding);
-		
-		HttpResponse response = client.execute(httpPut);
-		
-		int statusCode = response.getStatusLine().getStatusCode();
-		if(statusCode!=200)
-			throw new RuntimeException("error on communication. status code :" +statusCode);
-		
-		System.out.println("işlem tamamlandı");
+    @PostMapping(path = "/Subscribe/Verify")
+    @Timed
+    public void verify(@RequestBody String pBody,HttpServletRequest request) throws JsonParseException, JsonMappingException, IOException {
+    	terminalService.verify(pBody, request);
     }
+    
     
     public static void main(String[] args) throws ClientProtocolException, IOException {
 		//openDoor();

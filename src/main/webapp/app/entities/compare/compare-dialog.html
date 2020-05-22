@@ -1,0 +1,85 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myCompareLabel" data-translate="terminalApp.compare.home.createOrEditLabel">Create or edit a Compare</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.compare.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.compare.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="terminalApp.compare.url1" for="field_url1">Url 1</label>
+            <input type="text" class="form-control" name="url1" id="field_url1"
+                    ng-model="vm.compare.url1"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="terminalApp.compare.url2" for="field_url2">Url 2</label>
+            <input type="text" class="form-control" name="url2" id="field_url2"
+                    ng-model="vm.compare.url2"
+                    />
+        </div>
+        <div class="form-group" ngf-drop ngf-change="vm.setImage1($file, vm.compare)" ngf-pattern="'image/*'">
+            <label class="control-label" data-translate="terminalApp.compare.image1" for="field_image1">Image 1</label>
+            <div>
+                <img data-ng-src="{{'data:' + vm.compare.image1ContentType + ';base64,' + vm.compare.image1}}" style="max-height: 100px;" ng-if="vm.compare.image1" alt="compare image"/>
+                <div ng-if="vm.compare.image1" class="help-block clearfix">
+                    <span class="pull-left">{{vm.compare.image1ContentType}}, {{vm.byteSize(vm.compare.image1)}}</span>
+                    <button type="button" ng-click="vm.compare.image1=null;vm.compare.image1ContentType=null;"
+                            class="btn btn-default btn-xs pull-right">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </div>
+                <button type="button" ngf-select class="btn btn-default btn-block"
+                        ngf-change="vm.setImage1($file, vm.compare)" accept="image/*" data-translate="entity.action.addimage">
+                    Add image
+                </button>
+            </div>
+            <input type="hidden" class="form-control" name="image1" id="field_image1"
+                    ng-model="vm.compare.image1"
+                    />
+            <input type="hidden" class="form-control" name="image1ContentType" id="field_image1ContentType"
+                    ng-model="vm.compare.image1ContentType" />
+        </div>
+        <div class="form-group" ngf-drop ngf-change="vm.setImage2($file, vm.compare)" ngf-pattern="'image/*'">
+            <label class="control-label" data-translate="terminalApp.compare.image2" for="field_image2">Image 2</label>
+            <div>
+                <img data-ng-src="{{'data:' + vm.compare.image2ContentType + ';base64,' + vm.compare.image2}}" style="max-height: 100px;" ng-if="vm.compare.image2" alt="compare image"/>
+                <div ng-if="vm.compare.image2" class="help-block clearfix">
+                    <span class="pull-left">{{vm.compare.image2ContentType}}, {{vm.byteSize(vm.compare.image2)}}</span>
+                    <button type="button" ng-click="vm.compare.image2=null;vm.compare.image2ContentType=null;"
+                            class="btn btn-default btn-xs pull-right">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </div>
+                <button type="button" ngf-select class="btn btn-default btn-block"
+                        ngf-change="vm.setImage2($file, vm.compare)" accept="image/*" data-translate="entity.action.addimage">
+                    Add image
+                </button>
+            </div>
+            <input type="hidden" class="form-control" name="image2" id="field_image2"
+                    ng-model="vm.compare.image2"
+                    />
+            <input type="hidden" class="form-control" name="image2ContentType" id="field_image2ContentType"
+                    ng-model="vm.compare.image2ContentType" />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+        <br>
+        similarity : {{vm.similarity.similarity}}<br>
+        duration : {{vm.similarity.duration}}<br>
+    </div>
+</form>

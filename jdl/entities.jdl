@@ -1,0 +1,6 @@
+entity Compare{
+	url1 String
+	url2 String
+	image1 ImageBlob
+	image2 ImageBlob
+}
